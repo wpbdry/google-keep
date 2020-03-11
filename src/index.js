@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -55,3 +55,33 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+const template = [{
+  label: 'Keep', // Should be name variable also used in package.json
+  submenu: [
+    { label: 'About Keep', selector: 'orderFrontStandardAboutPanel:' },
+    { type: 'separator' },
+    { label: 'Hide Keep', accelerator: 'Command+H', click() { app.hide(); } },
+    { type: 'separator' },
+    { label: 'Quit', accelerator: 'Command+Q', click() { app.quit(); } },
+  ],
+}, {
+  label: 'Edit',
+  submenu: [
+    { label: 'Undo', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
+    { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
+    { type: 'separator' },
+    { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
+    { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
+    { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
+    { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
+  ],
+}, {
+  label: 'View',
+  submenu: [
+    { label: 'Reload', accelerator: 'CmdOrCtrl+R', click: () => mainWindow.reload() },
+  ],
+},
+];
+
+Menu.setApplicationMenu(Menu.buildFromTemplate(template));
